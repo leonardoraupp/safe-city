@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 
 
-// This code makes the database setup
+// This code makes the database setuppags10110
 const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: '127.0.0.1',
