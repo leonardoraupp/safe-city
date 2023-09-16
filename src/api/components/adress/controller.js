@@ -1,4 +1,3 @@
-const e = require("express")
 const { connection } = require("../../db")
 
 module.exports = {
@@ -26,8 +25,8 @@ module.exports = {
     },
     post(req, res) {
         const { incidentType, feedback } = req.body;
-
-        connection.query('INSERT INTO locals (incidentType, feedback) VALUES (?, ?)', [incidentType, feedback], (error, data) => {
+        
+        connection.query('INSERT INTO adress (incidentType, feedback) VALUES (?, ?)', [incidentType, feedback], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error inserting the adress.');
