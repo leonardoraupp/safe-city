@@ -1,5 +1,6 @@
 const express = require('express');
 const adressRoutes = require('./api/components/adress/routes');
+const serviceRoutes = require('./api/components/adress/service');
 
 const app = express();
 const port = 8000;
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
  
 app.use('/adress', adressRoutes); // Configuring adresses endpoints   
 app.use('/adress/:id', adressRoutes)
+app.use('/adress/service/:cep', serviceRoutes); // Configuring api service endpoint
 
 
 app.use((err, req, res, next) => {
