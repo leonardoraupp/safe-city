@@ -5,6 +5,18 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     adressController.getAll(req, res)
-}); 
+});
+
+router.get('/:id', (req, res) => {
+    adressController.getById(req, res)
+});
+
+router.post('/', (req, res) => {    
+    adressController.registerAdress(req, res)
+});
+
+router.put('/:id', (req, res) => {
+    adressController.updateAdressReview(req, res)
+});
 
 module.exports = router;

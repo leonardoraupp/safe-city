@@ -3,18 +3,19 @@ const { connection } = require("../../db")
 module.exports = {
 
     getAll(req, res) {
-        connection.query('SELECT * FROM ADRESS', (error, data) => {
+        connection.query('SELECT * FROM ADRESS', (error, data, field) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error retrieving the adresses.')
             } else {
                 res.send(data);
+                console.log(data[0]);
             }
         })
     },
-    get(req, res) {
+    getById(req, res) {
         const { id } = req.params;
-        connection.query('SELECT * FROM locals WHERE localID = ?', [id], (error, data) => {
+        connection.query('SELECT * FROM adress WHERE ID_ADRESS = ?', [id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error retrieving the adress.');
@@ -23,23 +24,22 @@ module.exports = {
             }
         })
     },
-    post(req, res) {
-        const { incidentType, feedback } = req.body;
-        
-        connection.query('INSERT INTO adress (incidentType, feedback) VALUES (?, ?)', [incidentType, feedback], (error, data) => {
+    registerAdress(req, res) {
+        const { postalCode, adressName, city, state } = req.body;
+
+        connection.query('INSERT INTO adress (CEP,  ENDERECO_NAME,  CIDADE, UF) VALUES (?, ?, ?, ?)', [postalCode, adressName, city, state], (error, data) => {
+            idAdress = data.insertId;
             if (error) {
                 console.error(error);
-                res.status(500).send('Error inserting the adress.');
+                res.status(500).send('Error registering the adress.');
             } else {
-                res.send('Local avalied successfully');
-            }
-        })
-        res.status(201).send('Local avalied');
+                res.status(201).send('Adress registered successfully');            }
+        });
     },
-    put(req, res) {
+    updateAdressReview(req, res) {
         const { id } = req.params;
-        const { incidentType, feedback } = req.body;
-        connection.query('UPDATE locals SET incidentType =?, feedback =? WHERE localID =?', [incidentType, feedback, id], (error, data) => {
+        const { postalCode, adressName, city, state  } = req.body;
+        connection.query('UPDATE adress SET CEP =?, ENDERECO_NAME =?,  CIDADE =?, UF =?    WHERE ID_ADRESS =?', [postalCode, adressName, city, state, id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error updating the adress.');
@@ -50,7 +50,7 @@ module.exports = {
     },
     delete(req, res) {
         const { id } = req.params;
-        connection.query('DELETE FROM locals WHERE localID =?', [id], (error, data) => {
+        connection.query('DELETE FROM locals WHERE ID_ADRESS =?', [id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error deleting the local');
