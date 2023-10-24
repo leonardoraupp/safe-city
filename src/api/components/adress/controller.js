@@ -36,10 +36,10 @@ module.exports = {
                 res.status(201).send('Adress registered successfully');            }
         });
     },
-    updateAdressReview(req, res) {
+    updateAdress(req, res) {
         const { id } = req.params;
         const { postalCode, adressName, city, state  } = req.body;
-        connection.query('UPDATE adress SET CEP =?, ENDERECO_NAME =?,  CIDADE =?, UF =?    WHERE ID_ADRESS =?', [postalCode, adressName, city, state, id], (error, data) => {
+        connection.query('UPDATE adress SET CEP =?, ENDERECO_NAME =?,  CIDADE =?, UF =? WHERE ID_ADRESS =?', [postalCode, adressName, city, state, id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error updating the adress.');
@@ -48,9 +48,9 @@ module.exports = {
             }
         })
     },
-    delete(req, res) {
+    deleteAdress(req, res) {
         const { id } = req.params;
-        connection.query('DELETE FROM locals WHERE ID_ADRESS =?', [id], (error, data) => {
+        connection.query('DELETE FROM adress WHERE ID_ADRESS =?', [id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error deleting the local');

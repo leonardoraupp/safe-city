@@ -16,7 +16,11 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    adressController.updateAdressReview(req, res)
+    adressController.updateAdress(req, res)
+});
+
+router.delete('/:id', (req, res) => {
+    adressController.deleteAdress(req, res)
 });
 
 module.exports = router;
