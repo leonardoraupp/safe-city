@@ -19,6 +19,8 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+app.use(express.urlencoded({ extended: true }));
  
 app.use('/adress', adressRoutes); // Configuring adresses endpoints   
 app.use('/adress/:id', adressRoutes)
