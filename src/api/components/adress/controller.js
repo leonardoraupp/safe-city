@@ -27,7 +27,7 @@ module.exports = {
     registerAdress(req, res) {
         const { postalCode, adressName, city, state } = req.body;
 
-        connection.query('INSERT INTO adress (CEP,  ENDERECO_NAME,  CIDADE, UF) VALUES (?, ?, ?, ?)', [postalCode, adressName, city, state], (error, data) => {
+        connection.query('INSERT INTO adress (POSTALCODE,  NAME,  CITY, STATE) VALUES (?, ?, ?, ?)', [postalCode, adressName, city, state], (error, data) => {
             idAdress = data.insertId;
             if (error) {
                 console.error(error);
