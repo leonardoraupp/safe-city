@@ -1,36 +1,40 @@
-const express = require('express');
-const adressRoutes = require('./api/components/adress/routes');
-const serviceRoutes = require('./api/components/adress/service');
+const express = require('express')
+const adressRoutes = require('./api/components/adress/routes')
+const serviceRoutes = require('./api/components/adress/service')
+const usersRoutes = require("./api/components/user/routes")
 
-const app = express();
-const port = 8000;
+const app = express()
+const port = 8000
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server running on port ${port}`))
 
 
 // Adding headers to our requests.
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization')
     if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE');
-        return res.sendStatus(200).json({});
-    }
-    next();
-});
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT,DELETE')
+        return res.sendStatus(200).json({})
+    }       
+    next()
+})
 
-app.use(express.urlencoded({ extended: true }));
- 
-app.use('/adress', adressRoutes); // Configuring adresses endpoints   
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/adress', adressRoutes) // Configuring adresses endpoints   
 app.use('/adress/:id', adressRoutes)
-app.use('/adress/service/:cep', serviceRoutes); // Configuring api service endpoint
+app.use('/adress/service/:cep', serviceRoutes) // Configuring api service endpoint
 
+app.use('/user', usersRoutes)
+app.use('/user/:id', usersRoutes)
+app.use('/users', usersRoutes)
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
+    res.status(err.status || 500)
     res.json({
         message: err.message
-    });
-    next();
-});
+    })
+    next()
+})
