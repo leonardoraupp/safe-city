@@ -40,4 +40,16 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+const User = require('./user');
+const Adress = require('./adress');
+const AdressAssessment = require('./adressassessment');
+
+User.init(sequelize);
+Adress.init(sequelize);
+AdressAssessment.init(sequelize);
+
+User.associate(sequelize.models);
+Adress.associate(sequelize.models);
+AdressAssessment.associate(sequelize.models);
+
 module.exports = db;
