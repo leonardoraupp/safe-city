@@ -25,10 +25,11 @@ module.exports = {
         })
     },
     registerAdress(req, res) {
-        const { postalCode, adressName, city, state } = req.body
+        const { postalCode, adressName, city, state, score, comment } = req.body
         const createdAt = new Date()
         const updatedAt = new Date()
         adressId = null
+        userId = null
         connection.query('INSERT INTO adresses (postalcode,  adressName,  city, state, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)', [postalCode, adressName, city, state, createdAt, updatedAt], (error, data) => {
             if (error) {
                 console.error(error);
@@ -38,6 +39,8 @@ module.exports = {
                 res.status(201).send('Endereço registrado com sucesso!');
             }
         });
+
+        connection.query('INSERT INTO adressassessment(userId, adressId, score, comment, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?)'[userId, adressId, score, comment, createdAt, null])
     },
     updateAdress(req, res) {
         const { id } = req.params;

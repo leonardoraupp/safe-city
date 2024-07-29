@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   AdressAssessment.init({
     id: DataTypes.INTEGER,
-    idUser: DataTypes.INTEGER,
-    idAdress: DataTypes.INTEGER,
-    score: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
+    adressId: DataTypes.INTEGER,
+    score: DataTypes.INTEGER,
     comment: DataTypes.STRING
   }, {
     sequelize,
