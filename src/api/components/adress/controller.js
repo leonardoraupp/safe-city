@@ -3,13 +3,12 @@ const { connection } = require("../../db")
 module.exports = {
 
     getAll(req, res) {
-        connection.query('SELECT * FROM adresses', (error, data, field) => {
+        connection.query('SELECT a.*, aa.score, aa.comment FROM  adresses a INNER JOIN assessmentaddress aa ON a.id  = aa.adressId', (error, data, field) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error retrieving the adresses.')
             } else {
                 res.send(data);
-                // console.log(data[0]);
             }
         })
     },
@@ -25,28 +24,37 @@ module.exports = {
         })
     },
     registerAdress(req, res) {
-        const { postalCode, adressName, city, state, score, comment } = req.body
+        const { postalCode, addressName, city, state, score, comment } = req.body
         const createdAt = new Date()
         const updatedAt = new Date()
-        adressId = null
-        userId = null
-        connection.query('INSERT INTO adresses (postalcode,  adressName,  city, state, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)', [postalCode, adressName, city, state, createdAt, updatedAt], (error, data) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('Error registering the adress.');
-            } else {
-                adressId = data.insertId
-                res.status(201).send('Endereço registrado com sucesso!');
-            }
-        });
+        const userId = null
+        console.log("Nome da rua:" + addressName)
+        connection.query('INSERT INTO adresses (postalcode, adressName, city, state, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
+            [postalCode, addressName, city, state, createdAt, updatedAt],
+            (error, data) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Erro ao registrar o endereço.');
+                }
+                const adressId = data.insertId
 
-        connection.query('INSERT INTO adressassessment(userId, adressId, score, comment, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?)'[userId, adressId, score, comment, createdAt, null])
+                connection.query('INSERT INTO assessmentaddress(adressId, createdAt, score, comment, userId, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
+                    [adressId, createdAt, score, comment, userId, updatedAt],
+                    (error, data) => {
+                        if (error) {
+                            console.error(error);
+                            res.status(500).send('Error ao avaliar o endereço.');
+                        } else {
+                            res.status(201).send('Endereço avaliado com sucesso!');
+                        }
+                    })
+            });
     },
     updateAdress(req, res) {
         const { id } = req.params;
-        const { postalCode, adressName, city, state } = req.body;
+        const { postalCode, addressName, city, state } = req.body;
         const updatedAt = new Date();
-        connection.query('UPDATE adresses SET postalcode =?, adressName =?,  city =?, state =?, updatedAt =? WHERE id =?', [postalCode, adressName, city, state, updatedAt, id], (error, data) => {
+        connection.query('UPDATE adresses SET postalcode =?, adressName =?,  city =?, state =?, updatedAt =? WHERE id =?', [postalCode, addressName, city, state, updatedAt, id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error updating the adress.');
