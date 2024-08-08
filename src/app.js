@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser');      // é um middleware do Express que permite analisar o corpo das requisições HTTP.
 
