@@ -10,6 +10,7 @@ const usersRoutes = require("./api/components/user/routes")
 
 const app = express()
 const PORT = process.env.PORT || 3000
+const NODE_ENV = process.env.NODE_ENV || 'development'
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT} and ENV ${NODE_ENV}`)
