@@ -1,5 +1,5 @@
 const { query } = require("express")
-const { connection } = require("../../db")
+const { connection } = require("../../../db")
 
 module.exports = {
     registerUser(req, res) {

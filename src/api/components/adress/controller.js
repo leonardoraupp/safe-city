@@ -1,4 +1,4 @@
-const { connection } = require("../../db")
+const { connection } = require("../../../db")
 
 module.exports = {
 
@@ -28,7 +28,6 @@ module.exports = {
         const createdAt = new Date()
         const updatedAt = new Date()
         const userId = null
-        console.log("Nome da rua:" + addressName)
         connection.query('INSERT INTO adresses (postalcode, adressName, city, state, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
             [postalCode, addressName, city, state, createdAt, updatedAt],
             (error, data) => {
