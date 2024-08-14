@@ -1,0 +1,35 @@
+# Exported from Render on 2024-08-14T21:59:26Z
+services:
+- type: web
+  name: safecity-app-stg
+  runtime: node
+  repo: https://github.com/leonardoraupp/safe-city-app
+  plan: free
+  branch: staging
+  envVars:
+  - key: PGPASSWORD
+    sync: false
+  - key: EXTERNAL_DB_URL
+    sync: false
+  - key: INTERNAL_DB_URL
+    sync: false
+  - key: PORT
+    sync: false
+  - key: NODE_ENV
+    sync: false
+  - key: DB_DIALECT
+    sync: false
+  - key: DB_PORT
+    sync: false
+  - key: DB_NAME
+    sync: false
+  - key: DB_PWD
+    sync: false
+  - key: DB_USER
+    sync: false
+  - key: DB_HOST
+    sync: false
+  region: oregon
+  buildCommand: npm install
+  startCommand: npm start
+version: "1"
