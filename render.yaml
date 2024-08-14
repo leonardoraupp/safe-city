@@ -5,7 +5,7 @@ services:
   runtime: node
   repo: https://github.com/leonardoraupp/safe-city-app
   plan: free
-  branch: production
+  branch: main
   envVars:
   - key: PGPASSWORD
     sync: false
