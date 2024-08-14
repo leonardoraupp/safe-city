@@ -1,11 +1,11 @@
 # Exported from Render on 2024-08-14T21:59:26Z
 services:
 - type: web
-  name: safecity-app-stg
+  name: safecity-app-prc
   runtime: node
   repo: https://github.com/leonardoraupp/safe-city-app
   plan: free
-  branch: staging
+  branch: production
   envVars:
   - key: PGPASSWORD
     sync: false
