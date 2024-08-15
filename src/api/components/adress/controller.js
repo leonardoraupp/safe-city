@@ -3,7 +3,7 @@ const { connection } = require("../../../db")
 module.exports = {
 
     getAll(req, res) {
-        connection.query('SELECT a.*, aa.score, aa.comment FROM  adresses a INNER JOIN assessmentaddress aa ON a.id  = aa.adressId', (error, data, field) => {
+        connection.query('SELECT a.*, aa.score, aa.comment FROM  adress a INNER JOIN adressassessment aa ON a.id  = aa.adressId', (error, data, field) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error retrieving the adresses.')
