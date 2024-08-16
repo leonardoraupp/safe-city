@@ -1,12 +1,13 @@
 require('dotenv').config();
 const express = require('express')
-const bodyParser = require('body-parser');      // é um middleware do Express que permite analisar o corpo das requisições HTTP.
+const bodyParser = require('body-parser'); // é um middleware do Express que permite analisar o corpo das requisições HTTP.
 
 
 const adressRoutes = require('./api/components/adress/routes')
 const serviceRoutes = require('./api/components/adress/service')
 const usersRoutes = require("./api/components/user/routes")
 
+const { sequelize } = require('../models/index'); // Import sequelize instance
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -48,3 +49,10 @@ app.use((err, req, res, next) => {
     })
     next()
 })
+
+// Sync the database
+/*sequelize.sync({ force: false }): This will synchronize your models with the database schema without dropping existing tables.
+If you set force: true, it will drop and recreate the tables, which is useful for development but should be used with caution in production.*/
+sequelize.sync({ force: true }).then(() => {
+    console.log('Database & tables created!');
+});

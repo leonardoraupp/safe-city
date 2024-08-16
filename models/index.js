@@ -6,7 +6,8 @@ const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require(__dirname + '/../config/config.js')[env];
+
 const db = {};
 
 let sequelize;
@@ -40,16 +41,16 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-const User = require('./user');
-const Adress = require('./adress');
-const AdressAssessment = require('./adressassessment');
+// const User = require('./user');
+// const Address = require('./address');
+// const AddressAssessment = require('./addressassessment');
 
-User.init(sequelize);
-Adress.init(sequelize);
-AdressAssessment.init(sequelize);
+// User.init(sequelize);
+// Address.init(sequelize);
+// AddressAssessment.init(sequelize);
 
-User.associate(sequelize.models);
-Adress.associate(sequelize.models);
-AdressAssessment.associate(sequelize.models);
+// User.associate(sequelize.models);
+// Address.associate(sequelize.models);
+// AddressAssessment.associate(sequelize.models);
 
 module.exports = db;

@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Adresses', [{
+    await queryInterface.bulkInsert('Address', [{
       postalCode: '9921310',
       adressName: 'Rua Pedro Marinoto',
       city: 'Sapucaia do Sul',
@@ -15,6 +15,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Adresses', null, {});
+    await queryInterface.bulkDelete('Address', null, {});
   }
 };
