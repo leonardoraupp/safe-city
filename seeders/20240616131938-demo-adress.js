@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Addresses', [{
       postalCode: '93212270',
-      adressName: 'Avenida Hugo Pardal',
+      addressName: 'Avenida Hugo Pardal',
       city: 'Sapucaia do Sul',
       state: "RS",
       createdAt: new Date(),

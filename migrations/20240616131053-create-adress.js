@@ -12,7 +12,7 @@ module.exports = {
       postalCode: {
         type: Sequelize.STRING
       },
-      adressName: {
+      addressName: {
         type: Sequelize.STRING
       },
       city: {
