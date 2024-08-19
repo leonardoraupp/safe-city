@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
-    "start:staging": "dotenv -e .env.staging node src/app.js",
-    "start:production": "dotenv -e .env.production node src/app.js"
+    "start:staging": "dotenv -e .env.staging -- npx sequelize-cli db:migrate --env production node src/app.js",
+    "start:production": "dotenv -e .env.production -- npx sequelize-cli db:migrate --env production node src/app.js"
   },
   "author": "Leonardo",
   "license": "ISC",
