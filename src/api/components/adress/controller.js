@@ -3,10 +3,10 @@ const { connection } = require("../../../db")
 module.exports = {
 
     getAll(req, res) {
-        connection.query('SELECT a.*, aa.score, aa.comment FROM  addresses a INNER JOIN addressassessments aa ON a.id  = aa.addressId', (error, data, field) => {
+        connection.query('SELECT a.*, aa.score, aa.comment FROM  Addresses a INNER JOIN AddressAssessments aa ON a.id  = aa.addressId', (error, data, field) => {
             if (error) {
                 console.error(error);
-                res.status(500).send('Error retrieving the addresses.')
+                res.status(500).send('Error retrieving the Addresses.')
             } else {
                 res.send(data);
             }
@@ -14,7 +14,7 @@ module.exports = {
     },
     getById(req, res) {
         const { id } = req.params;
-        connection.query('SELECT * FROM addresses WHERE id = ?', [id], (error, data) => {
+        connection.query('SELECT * FROM Addresses WHERE id = ?', [id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error retrieving the address.');
@@ -28,7 +28,7 @@ module.exports = {
         const createdAt = new Date()
         const updatedAt = new Date()
         const userId = null
-        connection.query('INSERT INTO addresses (postalcode, addressName, city, state, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
+        connection.query('INSERT INTO Addresses (postalcode, addressName, city, state, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
             [postalCode, addressName, city, state, createdAt, updatedAt],
             (error, data) => {
                 if (error) {
@@ -37,7 +37,7 @@ module.exports = {
                 }
                 const addressId = data.insertId
 
-                connection.query('INSERT INTO addressassessments(addressId, createdAt, score, comment, userId, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
+                connection.query('INSERT INTO AddressAssessments(addressId, createdAt, score, comment, userId, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
                     [addressId, createdAt, score, comment, userId, updatedAt],
                     (error, data) => {
                         if (error) {
@@ -53,7 +53,7 @@ module.exports = {
         const { id } = req.params;
         const { postalCode, addressName, city, state } = req.body;
         const updatedAt = new Date();
-        connection.query('UPDATE addresses SET postalcode =?, addressName =?,  city =?, state =?, updatedAt =? WHERE id =?', [postalCode, addressName, city, state, updatedAt, id], (error, data) => {
+        connection.query('UPDATE Addresses SET postalcode =?, addressName =?,  city =?, state =?, updatedAt =? WHERE id =?', [postalCode, addressName, city, state, updatedAt, id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error updating the address.');
@@ -64,7 +64,7 @@ module.exports = {
     },
     deleteAddress(req, res) {
         const { id } = req.params;
-        connection.query('DELETE FROM addresses WHERE id =?', [id], (error, data) => {
+        connection.query('DELETE FROM Addresses WHERE id =?', [id], (error, data) => {
             if (error) {
                 console.error(error);
                 res.status(500).send('Error deleting the local');
