@@ -1,76 +1,106 @@
-const { connection } = require("../../../db")
+const { connection } = require("../../../db");
 
 module.exports = {
-
     getAll(req, res) {
-        connection.query('SELECT a.*, aa.score, aa.comment FROM  "Addresses" a INNER JOIN "AddressAssessments" aa ON a.id  = aa."addressId";', (error, data, field) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('Error retrieving the Addresses.')
-            } else {
-                res.send(data);
+        connection.query(
+            'SELECT a.*, aa.score, aa.comment FROM "Addresses" a INNER JOIN "AddressAssessments" aa ON a.id = aa."addressId";',
+            (error, data) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Error retrieving the Addresses.');
+                } else {
+                    res.send(data.rows); // Use data.rows to get the actual data
+                }
             }
-        })
+        );
     },
+
     getById(req, res) {
         const { id } = req.params;
-        connection.query('SELECT * FROM Addresses WHERE id = ?', [id], (error, data) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('Error retrieving the address.');
-            } else {
-                res.send(data);
+        connection.query(
+            'SELECT * FROM "Addresses" WHERE id = $1',
+            [id],
+            (error, data) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Error retrieving the address.');
+                } else {
+                    res.send(data.rows[0]); // Use data.rows[0] to get the single row
+                }
             }
-        })
+        );
     },
+
     registerAddress(req, res) {
-        const { postalCode, addressName, city, state, score, comment } = req.body
-        const createdAt = new Date()
-        const updatedAt = new Date()
-        const userId = null
-        connection.query('INSERT INTO Addresses (postalcode, addressName, city, state, createdAt, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
+        const { postalCode, addressName, city, state, score, comment } = req.body;
+        const createdAt = new Date();
+        const updatedAt = new Date();
+        const userId = null;
+
+        connection.query(
+            `INSERT INTO "Addresses" ("postalCode", "addressName", city, state, "createdAt", "updatedAt")
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;`,
             [postalCode, addressName, city, state, createdAt, updatedAt],
             (error, data) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Erro ao registrar o endereço.');
-                }
-                const addressId = data.insertId
+                    res.status(500).send('Error registering the address.');
+                } else {
+                    const addressId = data.rows[0].id; // Use data.rows[0].id to get the inserted ID
 
-                connection.query('INSERT INTO AddressAssessments(addressId, createdAt, score, comment, userId, updatedAt) VALUES(?, ?, ?, ?, ?, ?)',
-                    [addressId, createdAt, score, comment, userId, updatedAt],
-                    (error, data) => {
-                        if (error) {
-                            console.error(error);
-                            res.status(500).send('Error ao avaliar o endereço.');
-                        } else {
-                            res.status(201).send('Endereço avaliado com sucesso!');
+                    connection.query(
+                        `INSERT INTO "AddressAssessments" ("addressId", "createdAt", score, comment, "userId", "updatedAt")
+                         VALUES ($1, $2, $3, $4, $5, $6);`,
+                        [addressId, createdAt, score, comment, userId, updatedAt],
+                        (error) => {
+                            if (error) {
+                                console.error(error);
+                                res.status(500).send('Error evaluating the address.');
+                            } else {
+                                res.status(201).send('Address evaluated successfully!');
+                            }
                         }
-                    })
-            });
+                    );
+                }
+            }
+        );
     },
+
     updateAddress(req, res) {
         const { id } = req.params;
         const { postalCode, addressName, city, state } = req.body;
         const updatedAt = new Date();
-        connection.query('UPDATE Addresses SET postalcode =?, addressName =?,  city =?, state =?, updatedAt =? WHERE id =?', [postalCode, addressName, city, state, updatedAt, id], (error, data) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('Error updating the address.');
-            } else {
-                res.send('address updated successfully');
+
+        connection.query(
+            `UPDATE "Addresses"
+             SET "postalCode" = $1, "addressName" = $2, city = $3, state = $4, "updatedAt" = $5
+             WHERE id = $6;`,
+            [postalCode, addressName, city, state, updatedAt, id],
+            (error) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Error updating the address.');
+                } else {
+                    res.send('Address updated successfully.');
+                }
             }
-        })
+        );
     },
+
     deleteAddress(req, res) {
         const { id } = req.params;
-        connection.query('DELETE FROM Addresses WHERE id =?', [id], (error, data) => {
-            if (error) {
-                console.error(error);
-                res.status(500).send('Error deleting the local');
-            } else {
-                res.send('Local deleted successfully');
+
+        connection.query(
+            'DELETE FROM "Addresses" WHERE id = $1;',
+            [id],
+            (error) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Error deleting the address.');
+                } else {
+                    res.send('Address deleted successfully.');
+                }
             }
-        })
+        );
     }
-}
+};
