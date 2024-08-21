@@ -53,6 +53,6 @@ app.use((err, req, res, next) => {
 // Sync the database
 /*sequelize.sync({ force: false }): This will synchronize your models with the database schema without dropping existing tables.
 If you set force: true, it will drop and recreate the tables, which is useful for development but should be used with caution in production.*/
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
     console.log('Database & tables created!');
 });
