@@ -17,18 +17,34 @@ module.exports = {
 
     getById(req, res) {
         const { id } = req.params;
-        connection.query(
-            'SELECT * FROM "Addresses" WHERE id = $1',
-            [id],
-            (error, data) => {
-                if (error) {
-                    console.error(error);
-                    res.status(500).send('Error retrieving the address.');
-                } else {
-                    res.send(data.rows[0]); // Use data.rows[0] to get the single row
+        if (id >= 8) {
+            const postalCode = id.toString()
+            connection.query(
+                'SELECT * FROM "Addresses" WHERE "postalCode" = $1',
+                [postalCode],
+                (error, data) => {
+                    if (error) {
+                        console.error(error);
+                        res.status(500).send('Error retrieving the addresses.');
+                    } else {
+                        res.send(data.rows);
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            connection.query(
+                'SELECT * FROM "Addresses" WHERE id = $1',
+                [id],
+                (error, data) => {
+                    if (error) {
+                        console.error(error);
+                        res.status(500).send('Error retrieving the address.');
+                    } else {
+                        res.send(data.rows[0]); // Use data.rows[0] to get the single row
+                    }
+                }
+            );
+        }
     },
 
     registerAddress(req, res) {
