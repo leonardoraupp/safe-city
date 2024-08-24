@@ -20,7 +20,7 @@ module.exports = {
         if (id >= 8) {
             const postalCode = id.toString()
             connection.query(
-                'SELECT * FROM "Addresses" WHERE "postalCode" = $1',
+                'SELECT a.*, aa.score, aa."comment" FROM "Addresses" a INNER JOIN "AddressAssessments" aa ON a.id = aa."addressId" WHERE a."postalCode" = $1;',
                 [postalCode],
                 (error, data) => {
                     if (error) {
@@ -33,7 +33,7 @@ module.exports = {
             );
         } else {
             connection.query(
-                'SELECT * FROM "Addresses" WHERE id = $1',
+                'SELECT a.*, aa.score, aa."comment" FROM "Addresses" a INNER JOIN "AddressAssessments" aa ON a.id = aa."addressId" WHERE a.id = $1;',
                 [id],
                 (error, data) => {
                     if (error) {
