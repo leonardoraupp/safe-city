@@ -3,7 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser'); // é um middleware do Express que permite analisar o corpo das requisições HTTP.
 
 
-const adressRoutes = require('./api/components/adress/routes')
+const addressRoutes = require('./api/components/adress/routes')
 const serviceRoutes = require('./api/components/adress/service')
 const usersRoutes = require("./api/components/user/routes")
 
@@ -34,9 +34,9 @@ app.use(express.urlencoded({ extended: true }))
 // Configuração para receber JSON no corpo da requisição
 app.use(bodyParser.json());
 
-app.use('/adress', adressRoutes) // Configuring adresses endpoints   
-app.use('/adress/:id', adressRoutes)
-app.use('/adress/service/:cep', serviceRoutes) // Configuring api service endpoint
+app.use('/address', addressRoutes) // Configuring addresses endpoints   
+app.use('/address/:id', addressRoutes)
+app.use('/address/service/:cep', serviceRoutes) // Configuring api service endpoint
 
 app.use('/user', usersRoutes)
 app.use('/user/:id', usersRoutes)
