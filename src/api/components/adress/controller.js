@@ -52,6 +52,7 @@ module.exports = {
         const createdAt = new Date();
         const updatedAt = new Date();
         const userId = null;
+        const scoreNumber = parseInt(score, 10) || 0
 
         connection.query(
             `INSERT INTO "Addresses" ("postalCode", "addressName", city, state, "createdAt", "updatedAt")
@@ -67,7 +68,7 @@ module.exports = {
                     connection.query(
                         `INSERT INTO "AddressAssessments" ("addressId", "createdAt", score, comment, "userId", "updatedAt")
                          VALUES ($1, $2, $3, $4, $5, $6);`,
-                        [addressId, createdAt, score, comment, userId, updatedAt],
+                        [addressId, createdAt, scoreNumber, comment, userId, updatedAt],
                         (error) => {
                             if (error) {
                                 console.error(error);
@@ -84,12 +85,13 @@ module.exports = {
 
     updateAddress(req, res) {
         const { id } = req.params;
-        const { postalCode, addressName, city, state } = req.body;
+        const { postalCode, addressName, city, state, score, comment } = req.body;
         const updatedAt = new Date();
+        const scoreNumber = parseInt(score, 10) || 0
 
         connection.query(
             `UPDATE "Addresses"
-             SET "postalCode" = $1, "addressName" = $2, city = $3, state = $4, "updatedAt" = $5
+             SET "postalCode" = $1, "addressName" = $2, "city" = $3, "state" = $4, "updatedAt" = $5
              WHERE id = $6;`,
             [postalCode, addressName, city, state, updatedAt, id],
             (error) => {
@@ -97,7 +99,21 @@ module.exports = {
                     console.error(error);
                     res.status(500).send('Error updating the address.');
                 } else {
-                    res.send('Address updated successfully.');
+                    // const addressId = data.rows[0].id;
+                    connection.query(
+                        `UPDATE "AddressAssessments"
+                        SET "addressId" = $1, score = $2, "comment" = $3, "updatedAt" = $4
+                        WHERE "addressId" = $5;`,
+                        [id, scoreNumber, comment, updatedAt, id],
+                        (error) => {
+                            if (error) {
+                                console.error(error);
+                                res.status(500).send('Error evaluating the address.');
+                            } else {
+                                res.status(200).send('Address updated successfully!');
+                            }
+                        }
+                    );
                 }
             }
         );
